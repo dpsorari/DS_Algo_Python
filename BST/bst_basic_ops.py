@@ -56,10 +56,10 @@ class Node(object):
 		children= self.countChild(node)
 		
 		if children == 0 :
-			if parent is None :
+			if parent is None:
 				del node
-				return None
-			elif parent.left is node: 
+				return None 
+			if parent.left is node: 
 				parent.left=None
 			else : parent.right = None
 			
@@ -93,31 +93,4 @@ class Node(object):
 			node.right=node.right.delete(suc.data,node)
 
 		return self 
-root= Node(30)
-insertList = [5,64,21,23,52,1,14,41,31]
-
-for x in insertList: 
-	root.insert(x)
-
-root.printInorder()
-print("\n")
-# node , parent = root.lookup(31)
-# print (node.data , parent.data )
-
-root = root.delete(23)
-print("deleted: "+ str(23))
-root.printInorder()
-print("\n")
-root =root.delete(31)
-print("deleted: "+ str(31))
-root.printInorder()
-print("\n")
-root= root.delete(1)
-print("deleted: "+ str(1))
-root.printInorder()
-print("\n")
-root=root.delete(30)
-print("deleted: "+ str(30))
-root.printInorder()
-print("\n")
 
