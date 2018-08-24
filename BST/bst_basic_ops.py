@@ -1,5 +1,5 @@
 class Node(object):
-	"""docstring for ClassName"""
+	"""Basic operations with a binary search Tree"""
 	def __init__(self, value):
 		self.left = None
 		self.right = None
@@ -19,7 +19,7 @@ class Node(object):
 	def printInorder(self):
 		if self.left :
 			self.left.printInorder() 
-		print(self.data);
+		print(self.data , end = ' | ')
 		if self.right : 
 			self.right.printInorder()
 
@@ -30,16 +30,69 @@ class Node(object):
 		elif value < self.data : 
 			if self.left : 
 				return self.left.lookup(value,self) 
-			else : return self.left , parent 
+			else : return None , None 
 		elif value > self.data :
 			if self.right : 
 				return self.right.lookup(value,self)
 			else : 
-				return self.right , parent
-	def delete(self, value, parent=None):
-		if self.data==value : 
-			if parent==None:
-				
+				return None , None
+	def countChild(self,parent) :
+		count =0
+		if parent.left : count+=1
+		if parent.right : count+=1
+
+		return count 
+
+	def find_successor(self, node):
+		currentNode=node.right
+		while currentNode.left is not None:
+			currentNode=currentNode.left
+		return currentNode	
+
+	def delete(self, value ,parent=None):
+		node, parent = self.lookup(value,parent)
+		if node is None : 
+			return  self
+		children= self.countChild(node)
+		
+		if children == 0 :
+			if parent is None :
+				del node
+				return None
+			elif parent.left is node: 
+				parent.left=None
+			else : parent.right = None
+			
+			del node
+			
+		elif children==1: 
+			if parent is None:
+				parent =node
+				node= node.left if node.left else node.right
+				del parent
+				return node
+
+			elif node.left :
+				if parent.left is node : 
+					parent.left =node.left
+				else :
+					parent.right= node.left
+			else :
+				if parent.left is node : 
+					parent.left =node.right
+				else :
+					parent.right= node.right
+		
+			del node
+
+		else :
+			suc = self.find_successor(node)
+			temp= suc.data
+			suc.data =node.data
+			node.data=temp
+			node.right=node.right.delete(suc.data,node)
+
+		return self 
 root= Node(30)
 insertList = [5,64,21,23,52,1,14,41,31]
 
@@ -47,7 +100,24 @@ for x in insertList:
 	root.insert(x)
 
 root.printInorder()
+print("\n")
+# node , parent = root.lookup(31)
+# print (node.data , parent.data )
 
-node , parent = root.lookup(31)
-print (node.data , parent.data )
+root = root.delete(23)
+print("deleted: "+ str(23))
+root.printInorder()
+print("\n")
+root =root.delete(31)
+print("deleted: "+ str(31))
+root.printInorder()
+print("\n")
+root= root.delete(1)
+print("deleted: "+ str(1))
+root.printInorder()
+print("\n")
+root=root.delete(30)
+print("deleted: "+ str(30))
+root.printInorder()
+print("\n")
 
