@@ -1,0 +1,45 @@
+class kmp :
+	def __init__(self):
+		pass
+	
+	def PrefixCalculation(self,pattern):
+		
+		k=0
+		p= [0]*len(pattern)
+		#p[i] strores the maximum length of prefix which also a suffix ending at i
+		for i in range(1,len(pattern)):
+			while k>0 and pattern[k]!=pattern[i] : 
+				k=p[k-1]
+			if pattern[k]==pattern[i]:
+				k=k+1
+			p[i]=k
+		return p
+
+	def contains(self,text,patt):
+		P=self.PrefixCalculation(patt)
+		j=0
+		i=0
+		while i < len(text):
+			if j == len(patt):
+				print("found")
+				return True
+			if text[i] == patt[j] :
+				i+=1
+				j+=1
+				continue
+			j= P[j-1] if j>0 else 0
+			if j==0 and patt[j] != text[i] and i < len(text) :
+				i+=1
+		return False
+test= kmp()		
+text="fdaabraabracadabrddsaa"
+pattern="abracadabra"
+if test.contains(text,pattern) :
+	print ("match")
+else :	
+	print ("No match")
+y=list(pattern)
+
+#print(y)
+#print(P
+
